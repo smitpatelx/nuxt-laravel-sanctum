@@ -5,24 +5,24 @@ export const getAuthAccount = () => {
   return authUser;
 }
 
-export const requireAuth = () => {
-  const router = useRouter();
+// export const requireAuth = () => {
+//   const router = useRouter();
 
-  const authUser = getAuthAccount();
-  const isAuthenticated = authUser.value !== null;
+//   const authUser = getAuthAccount();
+//   const isAuthenticated = authUser.value !== null;
 
-  if (!isAuthenticated) {
-    router.replace('/login');
-  }
-}
+//   if (!isAuthenticated) {
+//     router.replace('/login');
+//   }
+// }
 
-export const requireGuest = () => {
-  const router = useRouter();
+// export const requireGuest = () => {
+//   const router = useRouter();
 
-  const authUser = getAuthAccount();
-  const isAuthenticated = authUser.value !== null;
+//   const authUser = getAuthAccount();
+//   const isAuthenticated = authUser.value !== null;
 
-  if (isAuthenticated) {
-    router.replace('/dashboard');
-  }
-}
+//   if (isAuthenticated) {
+//     router.replace('/dashboard');
+//   }
+// }
