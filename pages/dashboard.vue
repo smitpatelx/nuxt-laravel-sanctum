@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import Dashboard from "~/components/views/dashboard.vue";
-import { requireAuth } from "~/lib";
 
-requireAuth();
+definePageMeta({
+  middleware: ["auth"],
+});
 </script>
 
 <template>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import Register from "~/components/views/register.vue";
-import { requireGuest } from "~/lib";
 
-requireGuest();
+definePageMeta({
+  middleware: ["auth"],
+});
 </script>
 
 <template>
