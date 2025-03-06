@@ -9,6 +9,8 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: false },
   modules: [
+    '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
     'nuxt-auth-sanctum',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
@@ -37,4 +39,8 @@ export default defineNuxtConfig({
       },
     },
   },
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
+  ssr: false,
 })
