@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Dashboard from "~/components/views/dashboard.vue";
+import Dashboard from "~/components/views/dashboard";
 
 definePageMeta({
   middleware: ["auth"],
