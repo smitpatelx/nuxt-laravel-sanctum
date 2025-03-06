@@ -1,3 +1,13 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "[vue-html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue-postcss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "vue.codeActions.enabled": true
 }

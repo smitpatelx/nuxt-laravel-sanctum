@@ -84,9 +84,10 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { initializeLoginFow } from "~/lib";
+import { initializeLoginFow, getSanctumAuth } from "~/lib";
 
 const router = useRouter();
+const appStore = useAppStore();
 
 const loading = ref(false);
 const loginError = ref<string | null>(null);
@@ -96,6 +97,26 @@ watch(loginError, () => {
     loginError.value = null;
   }, 5000);
 });
+
+const fetchAndSetUser = async () => {
+  try {
+    const { value } = await getSanctumAuth();
+    if (!value) {
+      return;
+    }
+    console.log(value);
+    console.log(value.email);
+    appStore.setAuthData({ email: value.email, name: value.name });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const navigateToDashboard = () => {
+  setTimeout(() => {
+    router.push("/dashboard");
+  });
+};
 
 const handleLogin = async (e: { target: HTMLFormElement }) => {
   loading.value = true;
@@ -115,15 +136,23 @@ const handleLogin = async (e: { target: HTMLFormElement }) => {
   }
 
   try {
-    const data = await initializeLoginFow({
+    await initializeLoginFow({
       email,
       password,
     });
-    router.push("/dashboard");
+    await fetchAndSetUser();
+    navigateToDashboard();
     loading.value = false;
   } catch (error) {
     if (error instanceof Error) {
-      loginError.value = error.message;
+      switch (error.message) {
+        case "User is already authenticated":
+          await fetchAndSetUser();
+          navigateToDashboard();
+          break;
+        default:
+          loginError.value = error.message;
+      }
     }
     loading.value = false;
   }

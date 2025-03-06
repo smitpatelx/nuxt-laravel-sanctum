@@ -1,14 +1,19 @@
 import axiosDefault from "axios";
+import { getCsrfToken } from "./auth";
 
-export const getAxios = () => {
-  const config = useRuntimeConfig();
+const config = useRuntimeConfig();
 
-  return axiosDefault.create({
-    withCredentials: true,
-    baseURL: config.public.backendBaseUrl,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-  });
-}
+export const axios = axiosDefault.create({
+  withCredentials: true,
+  baseURL: config.public.backendBaseUrl,
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  },
+});
+
+axios.interceptors.request.use((requestConfig) => {
+  const newConfig = { ...requestConfig };
+  newConfig.headers['x-xsrf-token'] = getCsrfToken();
+  return newConfig;
+});
