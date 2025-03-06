@@ -1,15 +1,25 @@
 import { processSanctumErrors } from "./helpers";
-import { getAxios } from "~/lib";
+import { axios } from "~/lib";
 import type { LoginFlow, RegisterFlow } from "./type";
 
+function getCookie(cname: string): string {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
 export const getCsrfToken = (): string | undefined => {
-  const xsrfToken = document.cookie
-    ?.split(";")
-    ?.find((c) => c.trim().startsWith("XSRF-TOKEN="));
-  const csrfToken = xsrfToken?.split("=")[1]
-    ? decodeURIComponent(xsrfToken.split("=")[1])
-    : undefined;
-  return csrfToken;
+  return getCookie("XSRF-TOKEN");
 }
 
 export const initializeLoginFow = async (data: LoginFlow | undefined) => {
@@ -23,12 +33,16 @@ export const initializeLoginFow = async (data: LoginFlow | undefined) => {
 };
 
 export const initializeRegisterFlow = async (data: RegisterFlow | undefined) => {
-  const csrfToken = getCsrfToken();
-
-  const res = await getAxios().post('/api/register', data, {
-    headers: {
-      'x-xsrf-token': csrfToken,
-    },
-  }).catch(processSanctumErrors);
-  return res;
+  return axios.post('/api/register', data).catch(processSanctumErrors);
 };
+
+export const getCurrentUser = async () => {
+  return axios.get('/api/user').catch(processSanctumErrors);
+};
+
+export const updateCurrentUser = async (data: {
+  name: string;
+  email: string;
+}) => {
+  return axios.put('/api/user', data).catch(processSanctumErrors);
+}
