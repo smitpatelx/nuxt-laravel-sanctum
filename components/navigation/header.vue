@@ -63,8 +63,6 @@
                   </span>
                 </div>
 
-                <!-- {{ props }} -->
-
                 <v-icon
                   color="blue-grey-lighten-2"
                   icon="mdi-chevron-down"
