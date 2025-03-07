@@ -3,6 +3,7 @@ import Dashboard from "~/components/views/dashboard";
 
 definePageMeta({
   middleware: ["auth"],
+  layout: "dashboard",
 });
 </script>
 

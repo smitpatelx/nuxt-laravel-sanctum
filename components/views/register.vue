@@ -75,7 +75,7 @@
             color="primary"
             class="w-100"
             type="submit"
-            elevation="0"
+            variant="flat"
             :loading="loading"
             :disabled="loading"
           >
@@ -84,11 +84,10 @@
 
           <NuxtLink to="/login">
             <v-btn
-              color="blue-grey-darken-4"
-              variant="plain"
+              color="secondary"
               class="w-100"
               type="button"
-              elevation="0"
+              variant="text"
               :disabled="loading"
               size="small"
             >
