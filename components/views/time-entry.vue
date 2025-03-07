@@ -35,26 +35,28 @@
               <v-col cols="12" md="6" xl="3">
                 <v-row dense>
                   <v-col cols="6">
-                    <v-text-field
+                    <v-select
                       variant="outlined"
                       density="comfortable"
+                      :items="HOUR_ITEMS"
                       v-model="hours"
                       label="Hour(s)"
                       name="hours"
-                      type="number"
-                      required
+                      item-title="text"
+                      item-value="value"
                     />
                   </v-col>
 
                   <v-col cols="6">
-                    <v-text-field
+                    <v-select
                       variant="outlined"
                       density="comfortable"
+                      :items="MINUTES_ITEMS"
                       v-model="minutes"
                       label="Minute(s)"
                       name="minutes"
-                      type="number"
-                      required
+                      item-title="text"
+                      item-value="value"
                     />
                   </v-col>
 
@@ -79,6 +81,9 @@
                       label="Mileage"
                       name="mileage"
                       type="number"
+                      min="0"
+                      max="999999"
+                      prepend-inner-icon="mdi-road-variant"
                     />
                   </v-col>
 
@@ -92,6 +97,7 @@
                       name="project"
                       item-title="text"
                       item-value="value"
+                      required
                     />
                   </v-col>
 
@@ -105,6 +111,7 @@
                       name="laborType"
                       item-title="text"
                       item-value="value"
+                      required
                     />
                   </v-col>
 
@@ -118,6 +125,7 @@
                       name="task"
                       item-title="text"
                       item-value="value"
+                      required
                     />
                   </v-col>
                 </v-row>
@@ -140,7 +148,7 @@
               <v-col align="end">
                 <div class="d-flex justify-end ga-4">
                   <v-btn
-                    type="submit"
+                    type="button"
                     variant="tonal"
                     :loading="loading"
                     prepend-icon="mdi-close"
@@ -173,60 +181,37 @@ import { ref, inject } from "vue";
 import { useDate } from "vuetify";
 import { updateCurrentUser } from "~/lib";
 import { ToastProvider } from "~/components/generic/toast-provider.vue";
+import {
+  HOUR_VALUE,
+  HOUR_ITEMS,
+  type HourValueT,
+  MINUTES_VALUE,
+  MINUTES_ITEMS,
+  type MinutesValueT,
+  MILEAGE_UNIT_VALUE,
+  MILEAGE_UNIT_ITEMS,
+  type MilageValueT,
+  PROJECT_ITEMS,
+  type ProjectValueT,
+  LABOR_TYPE_ITEMS,
+  type LaborTypeValueT,
+  TASK_ITEMS,
+  type TaskValueT,
+} from "~/lib";
 
 const toast = inject<ToastProvider>("toast", {} as ToastProvider);
 
 const dateAdapter = useDate();
 
-const MILEAGE_UNIT = {
-  MI: "Miles",
-  KM: "Kilo Meters",
-} as const;
-type MileageUnit = (typeof MILEAGE_UNIT)[keyof typeof MILEAGE_UNIT];
-const MILEAGE_UNIT_ITEMS = Object.entries(MILEAGE_UNIT).map(([key, value]) => ({
-  text: value,
-  value: key,
-}));
-
-const PROJECTS = {
-  PROJECT_1: "Project 1",
-  PROJECT_2: "Project 2",
-} as const;
-type Project = (typeof PROJECTS)[keyof typeof PROJECTS];
-const PROJECT_ITEMS = Object.entries(PROJECTS).map(([key, value]) => ({
-  text: value,
-  value: key,
-}));
-
-const LABOR_TYPES = {
-  LABOR_TYPE_1: "Labor Type 1",
-  LABOR_TYPE_2: "Labor Type 2",
-} as const;
-type LaborType = (typeof LABOR_TYPES)[keyof typeof LABOR_TYPES];
-const LABOR_TYPE_ITEMS = Object.entries(LABOR_TYPES).map(([key, value]) => ({
-  text: value,
-  value: key,
-}));
-
-const TASK = {
-  TASK_1: "Task 1",
-  TASK_2: "Task 2",
-} as const;
-type Task = (typeof TASK)[keyof typeof TASK];
-const TASK_ITEMS = Object.entries(TASK).map(([key, value]) => ({
-  text: value,
-  value: key,
-}));
-
 // dateAdapter.parseISO(new Date().toISOString())
 const date = ref<Date>(new Date());
-const hours = ref<number>(0);
-const minutes = ref<number>(0);
-const mileageUnit = ref<MileageUnit>(MILEAGE_UNIT.KM);
+const hours = ref<HourValueT>(HOUR_VALUE[0]);
+const minutes = ref<MinutesValueT>(MINUTES_VALUE[0]);
+const mileageUnit = ref<MilageValueT>(MILEAGE_UNIT_VALUE.KM);
 const mileage = ref<number>(0);
-const laborType = ref<Project | null>(null);
-const project = ref<LaborType | null>(null);
-const task = ref<Task | null>(null);
+const laborType = ref<ProjectValueT | null>(null);
+const project = ref<LaborTypeValueT | null>(null);
+const task = ref<TaskValueT | null>(null);
 const comments = ref<string | null>(null);
 
 const loading = ref(false);
