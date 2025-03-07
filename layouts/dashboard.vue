@@ -7,10 +7,12 @@ import ToastProvider from "~/components/generic/toast-provider";
 <template>
   <ToastProvider>
     <v-app>
-      <Header />
+      <SidebarNav />
 
-      <v-main class="flex-1-1 position-relative">
-        <v-container class="h-100 pa-0" fluid>
+      <v-main class="w-100 flex-1-1 position-relative">
+        <Header hide-app-icon />
+
+        <v-container class="h-100 pa-0 overflow-x-hidden overflow-y-auto" fluid>
           <slot />
         </v-container>
       </v-main>

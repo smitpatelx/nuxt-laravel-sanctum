@@ -1,14 +1,5 @@
+import { ALL_ROUTE, AUTH_ROUTES, GUEST_ROUTES } from "~/lib";
 import { useAppStore } from "~/stores/app";
-
-const ALL_ROUTE = {
-  login: '/login',
-  register: '/register',
-  dashboard: '/dashboard',
-  home: '/',
-} as const;
-
-const AUTH_ROUTES: string[] = [ALL_ROUTE.dashboard];
-const GUEST_ROUTES: string[] = [ALL_ROUTE.login, ALL_ROUTE.register];
 
 export default defineNuxtRouteMiddleware((to, from) => {
   const pinia = usePinia();

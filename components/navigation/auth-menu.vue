@@ -8,7 +8,7 @@
     <v-list
       density="compact"
       elevation="0"
-      class="border border-blue-grey-darken-1 pa-1 pb-0 align-self-end"
+      class="border border-blue-grey-darken-1 pa-1 align-self-end"
       rounded="lg"
       width="200"
     >
@@ -16,14 +16,14 @@
         v-for="(item, index) in items"
         :key="index"
         :value="index"
-        :color="item.color"
+        :color="itemColor"
         :base-color="item.baseColor"
         :variant="item.variant"
         @click="item.onClick"
+        :to="item.to"
         density="compact"
         rounded
         slim
-        nav
       >
         <template #prepend>
           <v-icon size="x-small">{{ item.prependIcon }}</v-icon>
@@ -35,9 +35,17 @@
 </template>
 
 <script setup lang="ts">
+import { useTheme } from "vuetify";
+import { ALL_ROUTE } from "~/lib";
+
+const theme = useTheme();
 const appStore = useAppStore();
 const router = useRouter();
 const { logout } = useSanctumAuth();
+
+const itemColor = computed(() =>
+  theme.current.value.dark ? "blue" : "blue-darken-2"
+);
 
 const handleDashboardClick = () => {
   router.push("/dashboard");
@@ -56,10 +64,14 @@ const items = ref([
   {
     title: "Dashboard",
     prependIcon: "mdi-view-dashboard",
-    baseColor: "grey-darken-4",
-    color: "grey-darken-4",
     variant: "text",
-    onClick: handleDashboardClick,
+    to: ALL_ROUTE.dashboard,
+  },
+  {
+    title: "Profile",
+    prependIcon: "mdi-account-cog",
+    variant: "text",
+    to: ALL_ROUTE.profile,
   },
   {
     title: "Logout",
