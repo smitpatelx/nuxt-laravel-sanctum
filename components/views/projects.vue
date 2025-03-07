@@ -39,11 +39,14 @@
             rounded="lg"
             variant="outlined"
             class="px-2 pb-4 border border-accent"
+            hover
+            ripple
+            @click="$emit('clicked')"
           >
             <v-container>
               <v-row align="center">
                 <v-col class="me-auto" cols="auto">
-                  <h6 class="text-h6 font-weight-bold">
+                  <h6 class="text-h6 font-weight-bold text-tertiary">
                     {{ project.title }}
                   </h6>
                 </v-col>
@@ -51,8 +54,7 @@
                   <v-fab
                     icon="mdi-chevron-right"
                     size="x-small"
-                    variant="tonal"
-                    :color="`${getColor(project.completedPercentage)}-darken-1`"
+                    variant="text"
                   />
                 </v-col>
               </v-row>
@@ -102,16 +104,12 @@
               <v-row>
                 <v-col cols="12">
                   <span
-                    :class="`d-flex align-center ga-4 text-subtitle-2 text-${getColor(
-                      project.completedPercentage
-                    )}-darken-3`"
+                    :class="`d-flex align-center ga-4 text-subtitle-2 ${project.progressTextColor}`"
                   >
                     {{ project.completedPercentage }}%
                     <v-progress-linear
                       :model-value="project.completedPercentage"
-                      :color="`${getColor(
-                        project.completedPercentage
-                      )}-darken-1`"
+                      :color="project.progressColor"
                       :width="4"
                     />
                   </span>
@@ -126,8 +124,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { formatStringDate } from "~/lib";
+import { useTheme } from "vuetify";
+
+const theme = useTheme();
 
 const generateRandomNum = () => Math.round(Math.random() * 100);
 
@@ -135,6 +136,21 @@ const getColor = (percentage: number) => {
   if (percentage < 50) return "red";
   if (percentage < 80) return "orange";
   return "green";
+};
+
+const isDarkMode = computed(() => theme.global.current.value.dark);
+
+const getProgressColors = (percentage: number) => {
+  const baseColor = getColor(percentage);
+
+  return {
+    progressTextColor: isDarkMode.value
+      ? `text-${baseColor}-lighten-2`
+      : `text-${baseColor}-darken-3`,
+    progressColor: isDarkMode.value
+      ? `${baseColor}-lighten-1`
+      : `${baseColor}-darken-1`,
+  };
 };
 
 const projects = ref(
@@ -147,6 +163,10 @@ const projects = ref(
       startDate: "2021-01-01",
       endDate: "2021-01-31",
       completedPercentage: generateRandomNum(),
+    }))
+    .map((project) => ({
+      ...project,
+      ...getProgressColors(project.completedPercentage),
     }))
 );
 </script>

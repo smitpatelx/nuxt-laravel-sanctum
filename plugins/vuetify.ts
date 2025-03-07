@@ -1,5 +1,5 @@
 // import this after install `@mdi/font` package
-import '@mdi/font/css/materialdesignicons.css'
+// import '@mdi/font/css/materialdesignicons.css'
 
 import 'vuetify/styles'
 import { createVuetify, type ThemeDefinition } from 'vuetify'
@@ -14,9 +14,8 @@ const light: ThemeDefinition = {
     background: '#fafafa',
     surface: '#fafafa',
     primary: '#0084d1',
-
     secondary: '#27272a',
-
+    tertiary: '#121212',
   },
 }
 
@@ -30,6 +29,7 @@ const dark: ThemeDefinition = {
     surface: '#09090b',
     primary: '#0084d1',
     secondary: '#9f9fa9',
+    tertiary: '#f5f5f5',
   },
 }
 

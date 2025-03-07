@@ -24,10 +24,13 @@
           xl="2"
         >
           <v-card
-            elevation="0"
+            flat
             rounded="lg"
             variant="outlined"
             class="px-2 pb-4 border border-accent"
+            hover
+            ripple
+            @click="$emit('clicked')"
           >
             <v-card-title class="text-h6 font-weight-bold">
               {{ item.title }}
